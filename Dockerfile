@@ -7,20 +7,20 @@ FROM utensils/opengl:stable
 # Install all needed runtime dependencies.
 RUN set -xe; \
     apk --update add --no-cache --virtual .runtime-deps \
-        bash \
-        ffmpeg \
-        git \
-        gource \
-        imagemagick \
-        lighttpd \
-        llvm7-libs \
-        py-pip \
-        python \
-        subversion \
-        wget; \
+    bash \
+    ffmpeg \
+    git \
+    gource \
+    imagemagick \
+    lighttpd \
+    llvm7-libs \
+    py-pip \
+    python \
+    subversion \
+    wget; \
     pip install --upgrade \
-        google-api-python-client \
-        progressbar2; \
+    google-api-python-client \
+    progressbar2; \
     cd /var/tmp; \
     wget https://github.com/tokland/youtube-upload/archive/master.zip; \
     unzip master.zip; \
@@ -54,17 +54,18 @@ WORKDIR /visualization
 ARG VCS_REF
 ARG BUILD_DATE
 LABEL maintainer="James Brink, brink.james@gmail.com" \
-      org.label-schema.build-date="${BUILD_DATE}" \
-      org.label-schema.decription="Envisaged - Dockerized Gource Visualizations." \
-      org.label-schema.name="Envisaged" \
-      org.label-schema.schema-version="1.0.0-rc1" \
-      org.label-schema.vcs-ref="${VCS_REF}" \
-      org.label-schema.vcs-url="https://github.com/utensils/Envisaged" \
-      org.label-schema.vendor="Utensils" \
-      org.label-schema.version="0.1.4"
+    org.label-schema.build-date="${BUILD_DATE}" \
+    org.label-schema.decription="Envisaged - Dockerized Gource Visualizations." \
+    org.label-schema.name="Envisaged" \
+    org.label-schema.schema-version="1.0.0-rc1" \
+    org.label-schema.vcs-ref="${VCS_REF}" \
+    org.label-schema.vcs-url="https://github.com/utensils/Envisaged" \
+    org.label-schema.vendor="Utensils" \
+    org.label-schema.version="0.1.4"
 
 # Set our environment variables.
 ENV \
+    SOURCE_TYPE="git remote url" \
     DISPLAY=":99" \
     GIT_URL="https://github.com/moby/moby" \
     GLOBAL_FILTERS="" \

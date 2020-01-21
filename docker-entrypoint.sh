@@ -8,25 +8,36 @@ xvfb_pid="$!"
 # possible race condition waiting for Xvfb.
 sleep 5
 
-if [ ! -d /visualization/git_repos ]; then
-	# Clone our git repo for the visualization.
-	if [ ! -d /visualization/git_repo ]; then
-		git clone ${GIT_URL} git_repo
-	fi
-	echo "Using volume mounted git repo"
-	gource --output-custom-log development.log git_repo
-else
+if  [ "${SOURCE_TYPE}" == "git log" ] ; then
+	cat visualization/git_log/* > development.log
+elif [ "${SOURCE_TYPE}" == "git logs" ] ; then
 	FILES=
+		for D in /visualization/git_logs/*; do
+			if [ -d "${D}" ]; then
+				NAME=${D##*/}
+				sed -i -r "s#(.+)\|#\1|/$NAME#" ${NAME}.log
+				FILES="$FILES ${NAME}.log"
+			fi
+		done
+		cat ${FILES} | sort -n > development.log
+elif [ "${SOURCE_TYPE}" == "remote git url" ] || [ ! -d /visualization/git_repo ] ; then
+ 	git clone ${GIT_URL} git_repo
+elif [ "${SOURCE_TYPE}" == "mounted git repo" ] || [ ! -d /visualization/git_repos ] ; then
+	gource --output-custom-log development.log git_repo
+elif [ "${SOURCE_TYPE}" == "mounted git repos" ] ||  [ -d /visualization/git_repos ] ; then
+  FILES=
 	for D in /visualization/git_repos/*; do
     	if [ -d "${D}" ]; then
 			NAME=${D##*/}
-			echo "Using volume mounted git repo $D as ${NAME}"
+			echo "Using mounted git repo $D as ${NAME}"
         	gource --output-custom-log ${NAME}.log $D
 			sed -i -r "s#(.+)\|#\1|/$NAME#" ${NAME}.log
         	FILES="$FILES ${NAME}.log"
     	fi
 	done
 	cat ${FILES} | sort -n > development.log
+else
+  echo "None of the source options were satisfied"
 fi
 
 # Set proper env variables if we have a logo.
