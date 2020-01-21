@@ -65,7 +65,6 @@ LABEL maintainer="James Brink, brink.james@gmail.com" \
 
 # Set our environment variables.
 ENV \
-    SOURCE_TYPE="git remote url" \
     DISPLAY=":99" \
     GIT_URL="https://github.com/moby/moby" \
     GLOBAL_FILTERS="" \

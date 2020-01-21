@@ -8,9 +8,9 @@ xvfb_pid="$!"
 # possible race condition waiting for Xvfb.
 sleep 5
 
-if  [ "${SOURCE_TYPE}" == "git log" ] ; then
+if  [ -d /visualization/git_log ] ; then
 	cat visualization/git_log/* > development.log
-elif [ "${SOURCE_TYPE}" == "git logs" ] ; then
+elif [ -d /visualization/git_logs ] ; then
 	FILES=
 		for D in /visualization/git_logs/*; do
 			if [ -d "${D}" ]; then
@@ -20,11 +20,11 @@ elif [ "${SOURCE_TYPE}" == "git logs" ] ; then
 			fi
 		done
 		cat ${FILES} | sort -n > development.log
-elif [ "${SOURCE_TYPE}" == "remote git url" ] || [ ! -d /visualization/git_repo ] ; then
+elif [ ! -d /visualization/git_repo ] ; then
  	git clone ${GIT_URL} git_repo
-elif [ "${SOURCE_TYPE}" == "mounted git repo" ] || [ ! -d /visualization/git_repos ] ; then
+elif [ ! -d /visualization/git_repos ] ; then
 	gource --output-custom-log development.log git_repo
-elif [ "${SOURCE_TYPE}" == "mounted git repos" ] ||  [ -d /visualization/git_repos ] ; then
+elif [ -d /visualization/git_repos ] ; then
   FILES=
 	for D in /visualization/git_repos/*; do
     	if [ -d "${D}" ]; then
