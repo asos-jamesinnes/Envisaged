@@ -65,13 +65,13 @@ Single volume mounted local git log. If you have generated a custom formated log
 It is assumed the log file(s) provided are valid which you can check locally `gource MyLogFile.log`
 
 ```shell
-    -v /path/to/your/repos:/visualization/git_log:ro
+    -v /path/to/your/log:/visualization/git_log:ro
 ```
 
 Multiple volume mounted local git logs. If you have generated multiple custom formated log files. The local mounted dir should contain a set of log files which are not nested in folders.
 
 ```shell
-    -v /path/to/your/repos:/visualization/git_logs:ro
+    -v /path/to/your/logs:/visualization/git_logs:ro
 ```
 
 ## Avatars
